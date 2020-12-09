@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
-public class DepartmentService {
+public class DepartmentService implements DepartmentServiceInterface{
 
     @Autowired
     private DepartmentRepository departmentRepository;
@@ -21,5 +21,15 @@ public class DepartmentService {
     public Department findDepartmentById(Long departmentId) {
         log.info("Inside findDepartmentById method of DepartmentService");
         return departmentRepository.findByDepartmentId(departmentId);
+    }
+
+    public void deleteDepartmentById(Long departmentId) {
+        log.info("Inside deleteDepartmentById method of DepartmentService");
+        departmentRepository.deleteById(departmentId);
+    }
+
+    public Department updateDepartment(Department department) {
+        log.info("Inside updateDepartment method of DepartmentService");
+        return departmentRepository.save(department);
     }
 }

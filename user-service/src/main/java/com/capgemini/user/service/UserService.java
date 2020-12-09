@@ -12,7 +12,7 @@ import org.springframework.web.client.RestTemplate;
 
 @Service
 @Slf4j
-public class UserService {
+public class UserService implements UserServiceInterface {
 
     @Autowired
     private UserRepository userRepository;
@@ -23,6 +23,29 @@ public class UserService {
     public User saveUser(User user) {
         log.info("Inside saveUser method of UserService");
         return userRepository.save(user);
+    }
+
+    public User findUserById(Long userId) {
+        log.info("Inside findUserById method of UserService");
+        return userRepository.findByUserId(userId);
+    }
+
+    public void deleteUserById(Long userId) {
+        log.info("Inside deleteUserById method of UserService");
+        userRepository.deleteById(userId);
+    }
+
+    public ResponseTemplateVO updateUser(User user) {
+        log.info("Inside updateUser method of UserService");
+        ResponseTemplateVO vo = new ResponseTemplateVO();
+        User updatedUser = userRepository.save(user);
+        Department department =
+                restTemplate.getForObject(
+                        "http://DEPARTMENT-SERVICE/departments/" + updatedUser.getDepartmentId(),
+                        Department.class);
+        vo.setUser(updatedUser);
+        vo.setDepartment(department);
+        return vo;
     }
 
     public ResponseTemplateVO getUserWithDepartment(Long userId) {
