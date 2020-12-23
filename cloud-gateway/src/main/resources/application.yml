@@ -7,24 +7,45 @@ spring:
   cloud:
     gateway:
       routes:
-        - id: USER-SERVICE
-          uri: lb://USER-SERVICE
+        - id: CONSULTANT-SERVICE
+          uri: lb://CONSULTANT-SERVICE
           predicates:
-            - Path=/users/**
+            - Path=/consultants/**
           filters:
             - name: CircuitBreaker
               args:
-                name: USER-SERVICE
-                fallbackuri: forward:/userServiceFallBack
-        - id: DEPARTMENT-SERVICE
-          uri: lb://DEPARTMENT-SERVICE
+                name: CONSULTANT-SERVICE
+                fallbackuri: forward:/consultantServiceFallBack
+
+        - id: TEAM-SERVICE
+          uri: lb://TEAM-SERVICE
           predicates:
-            - Path=/departments/**
+            - Path=/teams/**
           filters:
             - name: CircuitBreaker
               args:
-                name: DEPARTMENT-SERVICE
-                fallbackuri: forward:/departmentServiceFallBack
+                name: TEAM-SERVICE
+                fallbackuri: forward:/teamServiceFallBack
+
+        - id: ENGAGEMENT-SERVICE
+          uri: lb://ENGAGEMENT-SERVICE
+          predicates:
+            - Path=/engagements/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: ENGAGEMENT-SERVICE
+                fallbackuri: forward:/engagementServiceFallBack
+
+        - id: CUSTOMER-SERVICE
+          uri: lb://CUSTOMER-SERVICE
+          predicates:
+            - Path=/customers/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: CUSTOMER-SERVICE
+                fallbackuri: forward:/customerServiceFallBack
 
 hystrix:
   command:
